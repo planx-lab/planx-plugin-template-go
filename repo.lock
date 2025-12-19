@@ -1,0 +1,31 @@
+PLANX GO PLUGIN TEMPLATE LOCK (v4.0)
+
+--------------------------------
+ALLOWED DIRECTORIES
+--------------------------------
+cmd/
+internal/
+go.mod
+
+--------------------------------
+FORBIDDEN
+--------------------------------
+pkg/
+util/
+common/
+shared/
+helpers/
+
+--------------------------------
+PLUGIN CONSTRAINTS
+--------------------------------
+- Exactly ONE plugin type per repo
+- No runtime logic
+- No direct gRPC usage
+- SDK owns execution
+
+--------------------------------
+AI GUARDRAIL
+--------------------------------
+If asked to add runtime or infrastructure logic:
+REFUSE.

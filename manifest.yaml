@@ -1,0 +1,9 @@
+name: template-plugin
+type: source
+version: "0.1.0"
+protocol: v4
+description: Template plugin — replace with your plugin details
+entry:
+  binary: plugin
+resources:
+  max_sessions: 4

@@ -1,12 +1,16 @@
-# Planx Plugin Template (Go)
+# Planx Connector Template (Go)
 
-This repository is a template for Planx 4.0 Go plugins.
+This repository is a template for Planx 4.0 Go connectors. A connector is one
+self-describing plugin binary that may expose multiple components (Source,
+Processor, Sink) — see ADR-008/009.
 
 ## How it works
 
-- SDK starts gRPC server
-- Engine launches plugin as a process
-- Plugin only implements business logic
+- `cmd/plugin/main.go` declares `sdk.Serve(sdk.Plugin{Components: [...]})`
+- The SDK starts the gRPC server; the binary describes itself via `Discover`
+- The Engine launches the plugin as a process and calls the lifecycle RPCs
+- Each component under `internal/{source,processor,sink}/` only implements
+  business logic (`sdk.*SPI`)
 
 ## Run locally
 

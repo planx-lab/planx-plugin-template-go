@@ -10,9 +10,8 @@ MUST comply with:
 ---
 
 ## ALLOWED DIRECTORIES (Connector pattern)
-cmd/{source,processor,sink}/
+cmd/plugin/
 internal/{source,processor,sink}/
-manifests/
 go.mod
 
 ## FORBIDDEN
@@ -21,11 +20,13 @@ util/
 common/
 shared/
 helpers/
+manifests/
 
 ## PLUGIN CONSTRAINTS
-- Multiple plugin types per Connector repo are ALLOWED
-- Each plugin kind has its own binary
-- Each plugin kind has its own manifest in manifests/
+- One Connector = one self-describing binary (ADR-008/009)
+- Multiple Components (Source/Processor/Sink) MAY live in the same binary,
+  each declared as a sdk.ComponentSpec in cmd/plugin/main.go
+- No manifest.yaml (the binary describes itself via Discover)
 - No runtime logic
 - No direct gRPC usage
 - SDK owns execution

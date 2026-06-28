@@ -1,4 +1,4 @@
-# AI RULES — PLANX GO PLUGIN (v4)
+# AI RULES — PLANX GO CONNECTOR (v4)
 
 ## Authority Documents
 
@@ -10,8 +10,8 @@
 ---
 
 ## SCOPE
-This repository implements Connector business logic. A Connector MAY implement
-multiple plugin types (Source, Processor, Sink) in a single repo.
+This repository implements Connector business logic. A Connector is ONE plugin
+binary that MAY expose multiple Components (Source, Processor, Sink) — ADR-009.
 
 ---
 
@@ -26,18 +26,17 @@ AI MUST NOT:
 - Read from STDIN or write to STDOUT (except logging)
 
 AI MUST:
-- Place each plugin kind under its own directory:
-  - `internal/source/` — Source SPI implementation
-  - `internal/processor/` — Processor SPI implementation
-  - `internal/sink/` — Sink SPI implementation
-- Each `cmd/{kind}/main.go` calls exactly one SDK function:
-  - `sdk.ServeSource(source.New)`
-  - `sdk.ServeProcessor(processor.New)`
-  - `sdk.ServeSink(sink.New)`
-- Implement SPI interfaces from planx-sdk-go/spi
-- Keep logic synchronous and deterministic
-- Treat Batch as opaque bytes
-- Provide one `manifest.yaml` per plugin kind in `manifests/`
+- Place each component kind under its own directory:
+  - `internal/source/` — implements `sdk.SourceSPI`
+  - `internal/processor/` — implements `sdk.ProcessorSPI`
+  - `internal/sink/` — implements `sdk.SinkSPI`
+- Have exactly ONE binary: `cmd/plugin/main.go` calls `sdk.Serve(sdk.Plugin{...})`
+  declaring one or more `sdk.ComponentSpec`s (multi-component, ADR-009).
+- Implement SPI interfaces from `planx-sdk-go/sdk` (NOT a `spi` package).
+- Keep logic synchronous and deterministic.
+- Treat Batch as opaque bytes.
+- NOT ship a `manifest.yaml` — the binary is self-describing via `Discover`
+  (ADR-008).
 
 If a requirement seems to need runtime logic:
 STOP. That belongs to SDK.

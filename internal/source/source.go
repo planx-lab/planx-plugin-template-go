@@ -2,17 +2,19 @@ package source
 
 import (
 	"context"
-	"time"
+	"io"
 
-	"github.com/planx-lab/planx-sdk-go/spi"
+	"github.com/planx-lab/planx-sdk-go/sdk"
 )
 
+// Source is a minimal SOURCE component template. Replace ReadBatch with real logic.
 type Source struct{}
 
-func New() spi.Source { return &Source{} }
+func New() sdk.SourceSPI { return &Source{} }
 
-func (s *Source) Create(ctx context.Context, cfg []byte) error { return nil }
-func (s *Source) Start(ctx context.Context) error              { return nil }
-func (s *Source) Read(ctx context.Context) ([]byte, error)     { return nil, nil }
-func (s *Source) Ack(ctx context.Context) error                { return nil }
-func (s *Source) Stop(ctx context.Context) error                { <-ctx.Done(); return nil }
+func (s *Source) Init(_ context.Context, _ []byte) error { return nil }
+
+// ReadBatch returns EOF immediately. Replace with a real read loop.
+func (s *Source) ReadBatch() (sdk.Batch, error) { return nil, io.EOF }
+
+func (s *Source) Close() error { return nil }

@@ -3,13 +3,16 @@ package processor
 import (
 	"context"
 
-	"github.com/planx-lab/planx-sdk-go/spi"
+	"github.com/planx-lab/planx-sdk-go/sdk"
 )
 
+// Processor is a minimal PROCESSOR component template (1:1 passthrough).
 type Processor struct{}
 
-func New() spi.Processor { return &Processor{} }
+func New() sdk.ProcessorSPI { return &Processor{} }
 
-func (p *Processor) Create(ctx context.Context, cfg []byte) error { return nil }
-func (p *Processor) Process(ctx context.Context, data []byte) ([]byte, error) { return data, nil }
-func (p *Processor) Stop(ctx context.Context) error { <-ctx.Done(); return nil }
+func (p *Processor) Init(_ context.Context, _ []byte) error { return nil }
+
+func (p *Processor) Process(batch sdk.Batch) (sdk.Batch, error) { return batch, nil }
+
+func (p *Processor) Close() error { return nil }

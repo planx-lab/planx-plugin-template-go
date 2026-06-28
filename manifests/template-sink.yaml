@@ -1,9 +1,0 @@
-name: template-sink
-type: sink
-version: "0.1.0"
-protocol: v4
-description: "Template sink plugin — replace with your connector details"
-entry:
-  binary: template-sink
-resources:
-  max_sessions: 4
